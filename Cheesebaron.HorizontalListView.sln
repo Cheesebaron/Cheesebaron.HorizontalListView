@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cheesebaron.HorizontalListView.Droid", "Cheesebaron.HorizontalListView.Droid\Cheesebaron.HorizontalListView.Droid.csproj", "{9F000859-96BF-424B-A681-1FEBDCF1EB7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cheesebaron.HorizontalListView.Core", "Cheesebaron.HorizontalListView.Core\Cheesebaron.HorizontalListView.Core.csproj", "{D2DA213A-5B74-4517-B5B4-2F1FAD7BBD69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cheesebaron.HorizontalListView", "Cheesebaron.HorizontalListView\Cheesebaron.HorizontalListView.csproj", "{5952648F-5F49-4DBB-A6C8-0370B512F761}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F000859-96BF-424B-A681-1FEBDCF1EB7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F000859-96BF-424B-A681-1FEBDCF1EB7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F000859-96BF-424B-A681-1FEBDCF1EB7D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{9F000859-96BF-424B-A681-1FEBDCF1EB7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F000859-96BF-424B-A681-1FEBDCF1EB7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F000859-96BF-424B-A681-1FEBDCF1EB7D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{D2DA213A-5B74-4517-B5B4-2F1FAD7BBD69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2DA213A-5B74-4517-B5B4-2F1FAD7BBD69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2DA213A-5B74-4517-B5B4-2F1FAD7BBD69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2DA213A-5B74-4517-B5B4-2F1FAD7BBD69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5952648F-5F49-4DBB-A6C8-0370B512F761}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5952648F-5F49-4DBB-A6C8-0370B512F761}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5952648F-5F49-4DBB-A6C8-0370B512F761}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5952648F-5F49-4DBB-A6C8-0370B512F761}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
