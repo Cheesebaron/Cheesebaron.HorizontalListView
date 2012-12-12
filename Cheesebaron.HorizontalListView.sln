@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cheesebaron.HorizontalListV
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cheesebaron.HorizontalListView", "Cheesebaron.HorizontalListView\Cheesebaron.HorizontalListView.csproj", "{5952648F-5F49-4DBB-A6C8-0370B512F761}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MvvmCross", "MvvmCross", "{2E424963-B676-4859-AF01-6FADA255B78F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cheesebaron.HorizontalListView.Demo", "Cheesebaron.HorizontalListView.Demo\Cheesebaron.HorizontalListView.Demo.csproj", "{7E914DB6-ABA3-4B98-9820-65B49637A93C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,8 +31,18 @@ Global
 		{5952648F-5F49-4DBB-A6C8-0370B512F761}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5952648F-5F49-4DBB-A6C8-0370B512F761}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5952648F-5F49-4DBB-A6C8-0370B512F761}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E914DB6-ABA3-4B98-9820-65B49637A93C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E914DB6-ABA3-4B98-9820-65B49637A93C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E914DB6-ABA3-4B98-9820-65B49637A93C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{7E914DB6-ABA3-4B98-9820-65B49637A93C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E914DB6-ABA3-4B98-9820-65B49637A93C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E914DB6-ABA3-4B98-9820-65B49637A93C}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D2DA213A-5B74-4517-B5B4-2F1FAD7BBD69} = {2E424963-B676-4859-AF01-6FADA255B78F}
+		{9F000859-96BF-424B-A681-1FEBDCF1EB7D} = {2E424963-B676-4859-AF01-6FADA255B78F}
 	EndGlobalSection
 EndGlobal

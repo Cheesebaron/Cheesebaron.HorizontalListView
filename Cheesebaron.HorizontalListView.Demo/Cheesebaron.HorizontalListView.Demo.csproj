@@ -5,21 +5,21 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9F000859-96BF-424B-A681-1FEBDCF1EB7D}</ProjectGuid>
+    <ProjectGuid>{7E914DB6-ABA3-4B98-9820-65B49637A93C}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cheesebaron.HorizontalListView.Droid</RootNamespace>
-    <AssemblyName>Cheesebaron.HorizontalListView.Droid</AssemblyName>
+    <RootNamespace>Cheesebaron.HorizontalListView.Demo</RootNamespace>
+    <AssemblyName>Cheesebaron.HorizontalListView.Demo</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <AndroidApplication>true</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
     <AndroidSupportedAbis>armeabi%3barmeabi-v7a%3bx86</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,44 +43,27 @@
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Cirrious.MvvmCross.Android">
-      <HintPath>..\..\..\..\..\..\..\ENM\Main\extbin\MvvmCross\Cirrious.MvvmCross.Android.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Binding.Android">
-      <HintPath>..\..\..\..\..\..\..\ENM\Main\extbin\MvvmCross\Cirrious.MvvmCross.Binding.Android.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
-    <Reference Include="Newtonsoft.Json.MonoDroid">
-      <HintPath>..\..\..\..\..\..\..\ENM\Main\extbin\MvvmCross\Newtonsoft.Json.MonoDroid.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bindings\BindableHorizontalListView.cs" />
-    <Compile Include="Setup.cs" />
-    <Compile Include="SplashScreenActivity.cs" />
+    <Compile Include="Activity1.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\MainView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <AndroidResource Include="Resources\Layout\ViewItem.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Layout\SplashScreen.axml">
-      <SubType>AndroidResource</SubType>
+      <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Layout\Main.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\Main.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Values\Strings.xml" />
@@ -89,18 +72,13 @@
     <AndroidResource Include="Resources\Drawable\Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Properties\AndroidManifest.xml" />
-    <AndroidResource Include="Resources\Values\MvxBindingAttributes.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Cheesebaron.HorizontalListView.Core\Cheesebaron.HorizontalListView.Core.csproj">
-      <Project>{d2da213a-5b74-4517-b5b4-2f1fad7bbd69}</Project>
-      <Name>Cheesebaron.HorizontalListView.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Cheesebaron.HorizontalListView\Cheesebaron.HorizontalListView.csproj">
       <Project>{5952648f-5f49-4dbb-a6c8-0370b512f761}</Project>
       <Name>Cheesebaron.HorizontalListView</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

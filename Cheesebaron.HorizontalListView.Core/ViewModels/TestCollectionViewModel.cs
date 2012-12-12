@@ -22,6 +22,19 @@ namespace Cheesebaron.HorizontalListView.Core.ViewModels
             MvxTrace.TaggedTrace("TestCollectionViewModel", "I'm in your base testing {0} with string {1}", id, text);
         }
 
+        public IMvxCommand ScreenChanged
+        {
+            get
+            {
+                return new MvxRelayCommand<object>(DiplayScreenChanged);
+            }
+        }
+
+        private void DiplayScreenChanged(object it)
+        {
+            MvxTrace.TaggedTrace("TestCollectionViewModel", "I'm changing the screen! {0}", it);
+        }
+
         public TestCollectionViewModel()
         {
             TestViewModels = new ObservableCollection<TestViewModel>

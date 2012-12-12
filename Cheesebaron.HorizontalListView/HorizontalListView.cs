@@ -1,6 +1,7 @@
 /*
- * HorizontalListView.cs a port to C# of Paul Soucy's HorizontalListView.java.
- * 
+ * HorizontalListView.cs a derivation of Paul Soucy's HorizontalListView.java,
+ * with additional features, including Snap mode and C# event handlers.
+ *  
  * Copyright (c) 2012 Tomasz Cielecki (tomasz@ostebaronen.dk)
  * Copyright (c) 2011 Paul Soucy (paul@dev-smart.com)
  *  
@@ -36,20 +37,42 @@ using Android.Content;
 
 namespace Cheesebaron.HorizontalListView
 {
+    public delegate void ScreenChangedEventHandler(object sender, ScreenChangedEventArgs e);
+
+    public class ScreenChangedEventArgs : EventArgs
+    {
+        public int CurrentScreen { get; set; }
+        public int CurrentX { get; set; }
+    }
+
     public class HorizontalListView : AdapterView<BaseAdapter>
     {
+        #region Fields
+
+        private const int SnapVelocityDipPerSecond = 600;
+        private const int VelocityUnitPixelsPerSecond = 1000;
+        private const int FractionOfScreenWidthForSwipe = 4;
+        private const int AnimationScreenDurationMillis = 500;
+        private VelocityTracker _velocityTracker;
+        private int _maximumVelocity;
+        private int _densityAdjustedSnapVelocity;
+        private int _currentScreen;
+
         private int _leftViewIndex;
         private int _rightViewIndex;
         private int _displayOffset;
         private int _currentX;
         private int _nextX;
         private int _maxX;
-        private Scroller _scroller;
         private GestureDetector _gestureDetector;
         private readonly Queue<View> _removedViewQueue = new Queue<View>();
         private bool _dataChanged;
-        private readonly DataSetObserver _dataSetObserver;
+        private DataSetObserver _dataSetObserver;
         private BaseAdapter _adapter;
+
+        #endregion
+
+        #region Ctor + Init
 
         public HorizontalListView(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
         {
@@ -65,6 +88,7 @@ namespace Cheesebaron.HorizontalListView
         {
             InitView();
             _dataSetObserver = new DataObserver(this);
+            Snap = true;
         }
 
         private void InitView()
@@ -75,19 +99,36 @@ namespace Cheesebaron.HorizontalListView
             _currentX = 0;
             _nextX = 0;
             _maxX = int.MaxValue;
-            _scroller = new Scroller(Context);
+            Scroller = new Scroller(Context);
             var listener = new GestureListener(this);
             _gestureDetector = new GestureDetector(Context, listener);
+
+            var configuration = ViewConfiguration.Get(Context);
+            _maximumVelocity = configuration.ScaledMaximumFlingVelocity;
+
+            var density = Context.Resources.DisplayMetrics.Density;
+            _densityAdjustedSnapVelocity = (int)(density * SnapVelocityDipPerSecond);
         }
 
-        public override void SetSelection(int position)
+        #endregion
+
+        #region Properties
+
+        #region EventHandlers
+
+        public event ScreenChangedEventHandler ScreenChanged;
+
+        protected virtual void OnScreenChanged(ScreenChangedEventArgs e)
         {
-            throw new NotImplementedException();
+            if (ScreenChanged != null)
+                ScreenChanged(this, e);
         }
+
+        #endregion
 
         public override View SelectedView
         {
-            get { throw new NotImplementedException(); }
+            get { return GetChildAt(CurrentScreen); }
         }
 
         public override BaseAdapter Adapter
@@ -104,35 +145,46 @@ namespace Cheesebaron.HorizontalListView
             }
         }
 
-        private class DataObserver : DataSetObserver
+        public Scroller Scroller { get; private set; }
+
+        /// <summary>
+        /// Returns the CurrentScreen (Snap mode only).
+        /// </summary>
+        public int CurrentScreen
         {
-            private readonly HorizontalListView _horizontalListView;
-
-            public DataObserver(HorizontalListView horizontalListView)
+            get { return _currentScreen; }
+            private set
             {
-                _horizontalListView = horizontalListView;
-            }
-
-            public override void OnChanged()
-            {
-                _horizontalListView._dataChanged = true;
-                _horizontalListView.Invalidate();
-                _horizontalListView.RequestLayout();
-            }
-
-            public override void OnInvalidated()
-            {
-                _horizontalListView.Reset();
-                _horizontalListView.Invalidate();
-                _horizontalListView.RequestLayout();
+                _currentScreen = value;
+                OnScreenChanged(new ScreenChangedEventArgs
+                {
+                    CurrentScreen = _currentScreen,
+                    CurrentX = _currentX
+                });
             }
         }
 
+        /// <summary>
+        /// Returns the current leftmost X coordinate.
+        /// </summary>
+        public int CurrentX
+        {
+            get { return _currentX; } 
+            private set { _currentX = value; }
+        }
+       
+        public bool Snap { get; set; }
+
+        #endregion
+        
         private void Reset()
         {
-            InitView();
-            RemoveAllViewsInLayout();
-            RequestLayout();
+            lock (this)
+            {
+                InitView();
+                RemoveAllViewsInLayout();
+                RequestLayout();    
+            }
         }
 
         private void AddAndMeasureChild(View child, int viewPos)
@@ -153,42 +205,48 @@ namespace Cheesebaron.HorizontalListView
 
             if (_dataChanged)
             {
-                var oldCurrentX = _currentX;
+                var oldCurrentX = CurrentX;
                 InitView();
                 RemoveAllViewsInLayout();
                 _nextX = oldCurrentX;
                 _dataChanged = false;
             }
 
-            if (_scroller.ComputeScrollOffset())
-                _nextX = _scroller.CurrX;
+            if (Scroller.ComputeScrollOffset())
+                _nextX = Scroller.CurrX;
 
             if (_nextX <= 0)
             {
                 _nextX = 0;
-                _scroller.ForceFinished(true);
+                Scroller.ForceFinished(true);
             }
 
             if (_nextX >= _maxX)
             {
                 _nextX = _maxX;
-                _scroller.ForceFinished(true);
+                Scroller.ForceFinished(true);
             }
 
-            var dx = _currentX - _nextX;
+            var dx = CurrentX - _nextX;
             RemoveNonVisibleItems(dx);
             FillList(dx);
             PositionItems(dx);
 
-            _currentX = _nextX;
+            CurrentX = _nextX;
 
-            if (_scroller.IsFinished)
+            if (!Scroller.IsFinished)
                 Post(RequestLayout);
+        }
+
+        public override void SetSelection(int position)
+        {
+            CurrentScreen = position;
+            SnapToDestination();
         }
 
         private void FillList(int dx)
         {
-            var edge = 0;
+            var edge = _displayOffset; //TODO: https://github.com/dinocore1/DevsmartLib-Android/issues/24
             var child = GetChildAt(ChildCount - 1);
             if (null != child)
                 edge = child.Right;
@@ -217,7 +275,7 @@ namespace Cheesebaron.HorizontalListView
 
                 if (_rightViewIndex == Adapter.Count - 1)
                 {
-                    _maxX = _currentX + rightEdge - Width;
+                    _maxX = CurrentX + rightEdge - Width;
                 }
 
                 if (_maxX < 0)
@@ -289,15 +347,77 @@ namespace Cheesebaron.HorizontalListView
             return handled;
         }
 
-        public void ScrollTo(int x)
+        public override bool OnTouchEvent(MotionEvent e)
         {
-            _scroller.StartScroll(_nextX, 0, x - _nextX, 0);
+            if (Snap) // Oh snap!
+            {
+                if (_velocityTracker == null)
+                    _velocityTracker = VelocityTracker.Obtain();
+                _velocityTracker.AddMovement(e);
+
+                if (e.Action == MotionEventActions.Cancel || e.Action == MotionEventActions.Up)
+                {
+                    var velocityTracker = _velocityTracker;
+                    velocityTracker.ComputeCurrentVelocity(VelocityUnitPixelsPerSecond, _maximumVelocity);
+                    var velocityX = (int)velocityTracker.XVelocity;
+
+                    if (velocityX > _densityAdjustedSnapVelocity && CurrentScreen > 0)
+                        SnapToScreen(CurrentScreen - 1);
+                    else if (velocityX < -_densityAdjustedSnapVelocity && CurrentScreen < Adapter.Count - 1)
+                        SnapToScreen(CurrentScreen + 1);
+                    else
+                        SnapToDestination();
+                    
+                    if (null != _velocityTracker)
+                    {
+                        _velocityTracker.Recycle();
+                        _velocityTracker = null;
+                    }
+
+                    return true;
+                }    
+            }
+            return base.OnTouchEvent(e);
+        }
+
+        public void ScrollTo(int x) {
+		    Scroller.StartScroll(_nextX, 0, x - _nextX, 0);
+		    RequestLayout();
+	    }
+
+        private void SnapToScreen(int whichScreen, int duration = -1)
+        {
+            CurrentScreen = Math.Max(0, Math.Min(whichScreen, Adapter.Count - 1));
+            var nextX = CurrentScreen * Width;
+            var delta = nextX - _nextX;
+
+            if (duration < 0)
+                Scroller.StartScroll(_nextX, 0, delta, 0, (int)(Math.Abs(delta) / (float)Width * AnimationScreenDurationMillis));
+            else
+                Scroller.StartScroll(_nextX, 0, delta, duration);
+
             RequestLayout();
+        }
+
+        private void SnapToDestination()
+        {
+            var whichScreen = CurrentScreen;
+            var deltaX = _nextX - (Width * CurrentScreen);
+
+            if ((deltaX < 0) && CurrentScreen != 0 && (Width / FractionOfScreenWidthForSwipe < -deltaX))
+                whichScreen--;
+            else if ((deltaX > 0) && (CurrentScreen + 1 != Adapter.Count) && (Width / FractionOfScreenWidthForSwipe < deltaX))
+                whichScreen++;
+
+            SnapToScreen(whichScreen);
         }
 
         protected bool OnFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
         {
-            _scroller.Fling(_nextX, 0, (int) -velocityX, 0, 0, _maxX, 0, 0);
+            lock (this)
+            {
+                Scroller.Fling(_nextX, 0, (int)-velocityX, 0, 0, _maxX, 0, 0);
+            }
             RequestLayout();
 
             return true;
@@ -305,11 +425,65 @@ namespace Cheesebaron.HorizontalListView
 
         protected bool OnDown(MotionEvent e)
         {
-            _scroller.ForceFinished(true);
+            Scroller.ForceFinished(true);
             return true;
         }
 
-        private class GestureListener: GestureDetector.SimpleOnGestureListener
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (null != _gestureDetector)
+                {
+                    _gestureDetector.Dispose();
+                    _gestureDetector = null;
+                }
+                if (null != Scroller)
+                {
+                    Scroller.Dispose();
+                    Scroller = null;
+                }
+                if (null != _dataSetObserver)
+                {
+                    _dataSetObserver.Dispose();
+                    _dataSetObserver = null;
+                }
+                if (null != _velocityTracker)
+                {
+                    _velocityTracker.Recycle();
+                    _velocityTracker = null;
+                }
+            }
+            
+            base.Dispose(disposing);
+        }
+
+        #region Internal classes
+        private class DataObserver : DataSetObserver
+        {
+            private readonly HorizontalListView _horizontalListView;
+
+            public DataObserver(HorizontalListView horizontalListView)
+            {
+                _horizontalListView = horizontalListView;
+            }
+
+            public override void OnChanged()
+            {
+                _horizontalListView._dataChanged = true;
+                _horizontalListView.Invalidate();
+                _horizontalListView.RequestLayout();
+            }
+
+            public override void OnInvalidated()
+            {
+                _horizontalListView.Reset();
+                _horizontalListView.Invalidate();
+                _horizontalListView.RequestLayout();
+            }
+        }
+
+        private class GestureListener : GestureDetector.SimpleOnGestureListener
         {
             private readonly HorizontalListView _horizontalListView;
 
@@ -325,12 +499,16 @@ namespace Cheesebaron.HorizontalListView
 
             public override bool OnFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
             {
-                return _horizontalListView.OnFling(e1, e2, velocityX, velocityY);
+                //Don't want fling in snap mode.
+                return !_horizontalListView.Snap && _horizontalListView.OnFling(e1, e2, velocityX, velocityY);
             }
 
             public override bool OnScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
             {
-                _horizontalListView._nextX += (int) distanceX;
+                lock (_horizontalListView)
+                {
+                    _horizontalListView._nextX += (int)distanceX;
+                }
                 _horizontalListView.RequestLayout();
 
                 return true;
@@ -344,7 +522,7 @@ namespace Cheesebaron.HorizontalListView
                     if (IsEventWithinView(e, child))
                     {
                         if (null != _horizontalListView.OnItemClickListener)
-                            _horizontalListView.OnItemClickListener.OnItemClick(_horizontalListView, child, _horizontalListView._leftViewIndex + 1 + i, 
+                            _horizontalListView.OnItemClickListener.OnItemClick(_horizontalListView, child, _horizontalListView._leftViewIndex + 1 + i,
                                 _horizontalListView.Adapter.GetItemId(_horizontalListView._leftViewIndex + 1 + i));
                         if (null != _horizontalListView.OnItemSelectedListener)
                             _horizontalListView.OnItemSelectedListener.OnItemSelected(_horizontalListView, child, _horizontalListView._leftViewIndex + 1 + i,
@@ -385,5 +563,6 @@ namespace Cheesebaron.HorizontalListView
                 return viewRect.Contains((int)e.RawX, (int)e.RawY);
             }
         }
+        #endregion
     }
 }

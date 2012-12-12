@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:local="http://schemas.android.com/apk/res/cheesebaron.horizontallistview.droid"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:background="#fff"
+  >
+  <TextView
+    android:id="@+id/desc"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:textColor="#666"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:gravity="center_horizontal"
+    android:layout_below="@+id/id"
+  	/>
+  <TextView
+    android:id="@+id/id"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:textColor="#666"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:gravity="center_horizontal"
+    android:layout_below="@+id/image"
+  	/>
+  <ImageView
+    android:id="@+id/image"
+    android:layout_width="150dip"
+    android:layout_height="150dip"
+    android:scaleType="centerCrop"
+    android:src="@drawable/icon"
+  	/>
+</RelativeLayout>
