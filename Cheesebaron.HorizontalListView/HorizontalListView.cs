@@ -88,7 +88,6 @@ namespace Cheesebaron.HorizontalListView
         {
             InitView();
             _dataSetObserver = new DataObserver(this);
-            Snap = true;
         }
 
         private void InitView()
@@ -342,9 +341,7 @@ namespace Cheesebaron.HorizontalListView
 
         public override bool DispatchTouchEvent(MotionEvent e)
         {
-            var handled = base.DispatchTouchEvent(e);
-            handled |= _gestureDetector.OnTouchEvent(e);
-            return handled;
+            return (base.DispatchTouchEvent(e) | _gestureDetector.OnTouchEvent(e));
         }
 
         public override bool OnTouchEvent(MotionEvent e)
