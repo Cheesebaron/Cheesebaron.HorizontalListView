@@ -88,6 +88,7 @@ namespace Cheesebaron.HorizontalListView
         {
             InitView();
             _dataSetObserver = new DataObserver(this);
+            //Snap = true;
         }
 
         private void InitView()
@@ -338,12 +339,13 @@ namespace Cheesebaron.HorizontalListView
                 left += childWidth + child.PaddingRight;
             }
         }
-
+        
         public override bool DispatchTouchEvent(MotionEvent e)
         {
-            return (base.DispatchTouchEvent(e) | _gestureDetector.OnTouchEvent(e));
+            var handled = base.DispatchTouchEvent(e) | _gestureDetector.OnTouchEvent(e);
+            return Snap ? base.DispatchTouchEvent(e) : handled;
         }
-
+        
         public override bool OnTouchEvent(MotionEvent e)
         {
             if (Snap) // Oh snap!
@@ -496,16 +498,12 @@ namespace Cheesebaron.HorizontalListView
 
             public override bool OnFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
             {
-                //Don't want fling in snap mode.
-                return !_horizontalListView.Snap && _horizontalListView.OnFling(e1, e2, velocityX, velocityY);
+                return _horizontalListView.OnFling(e1, e2, velocityX, velocityY);
             }
 
             public override bool OnScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
             {
-                lock (_horizontalListView)
-                {
-                    _horizontalListView._nextX += (int)distanceX;
-                }
+                _horizontalListView._nextX += (int)distanceX;
                 _horizontalListView.RequestLayout();
 
                 return true;
@@ -516,16 +514,15 @@ namespace Cheesebaron.HorizontalListView
                 for (var i = 0; i < _horizontalListView.ChildCount; i++)
                 {
                     var child = _horizontalListView.GetChildAt(i);
-                    if (IsEventWithinView(e, child))
-                    {
-                        if (null != _horizontalListView.OnItemClickListener)
-                            _horizontalListView.OnItemClickListener.OnItemClick(_horizontalListView, child, _horizontalListView._leftViewIndex + 1 + i,
-                                _horizontalListView.Adapter.GetItemId(_horizontalListView._leftViewIndex + 1 + i));
-                        if (null != _horizontalListView.OnItemSelectedListener)
-                            _horizontalListView.OnItemSelectedListener.OnItemSelected(_horizontalListView, child, _horizontalListView._leftViewIndex + 1 + i,
-                                _horizontalListView.Adapter.GetItemId(_horizontalListView._leftViewIndex + 1 + i));
-                        break;
-                    }
+
+                    if (!IsEventWithinView(e, child)) continue;
+                    if (null != _horizontalListView.OnItemClickListener)
+                        _horizontalListView.OnItemClickListener.OnItemClick(_horizontalListView, child, _horizontalListView._leftViewIndex + 1 + i,
+                                                                            _horizontalListView.Adapter.GetItemId(_horizontalListView._leftViewIndex + 1 + i));
+                    if (null != _horizontalListView.OnItemSelectedListener)
+                        _horizontalListView.OnItemSelectedListener.OnItemSelected(_horizontalListView, child, _horizontalListView._leftViewIndex + 1 + i,
+                                                                                  _horizontalListView.Adapter.GetItemId(_horizontalListView._leftViewIndex + 1 + i));
+                    break;
                 }
 
                 return true;
@@ -537,13 +534,11 @@ namespace Cheesebaron.HorizontalListView
                 {
                     var child = _horizontalListView.GetChildAt(i);
 
-                    if (IsEventWithinView(e, child))
-                    {
-                        if (null != _horizontalListView.OnItemLongClickListener)
-                            _horizontalListView.OnItemLongClickListener.OnItemLongClick(_horizontalListView, child, _horizontalListView._leftViewIndex + 1 + i,
-                                _horizontalListView.Adapter.GetItemId(_horizontalListView._leftViewIndex + 1 + i));
-                        break;
-                    }
+                    if (!IsEventWithinView(e, child)) continue;
+                    if (null != _horizontalListView.OnItemLongClickListener)
+                        _horizontalListView.OnItemLongClickListener.OnItemLongClick(_horizontalListView, child, _horizontalListView._leftViewIndex + 1 + i,
+                                                                                    _horizontalListView.Adapter.GetItemId(_horizontalListView._leftViewIndex + 1 + i));
+                    break;
                 }
             }
 
