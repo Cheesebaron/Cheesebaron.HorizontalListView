@@ -24,11 +24,12 @@
  */
 
 using System.Collections;
+using System.Windows.Input;
 using Android.Content;
 using Android.Util;
-using Cirrious.MvvmCross.Binding.Android;
-using Cirrious.MvvmCross.Binding.Android.Views;
-using Cirrious.MvvmCross.Interfaces.Commands;
+using Cirrious.MvvmCross.Binding.Attributes;
+using Cirrious.MvvmCross.Binding.Droid;
+using Cirrious.MvvmCross.Binding.Droid.Views;
 
 namespace Cheesebaron.HorizontalListView.Droid.Bindings
 {
@@ -69,8 +70,8 @@ namespace Cheesebaron.HorizontalListView.Droid.Bindings
             }
         }
 
-        //[MvxSetToNullAfterBinding]
-        public IList ItemsSource
+        [MvxSetToNullAfterBinding]
+        public IEnumerable ItemsSource
         {
             get { return Adapter.ItemsSource; }
             set { Adapter.ItemsSource = value; }
@@ -82,7 +83,7 @@ namespace Cheesebaron.HorizontalListView.Droid.Bindings
             set { Adapter.ItemTemplateId = value; }
         }
 
-        public new IMvxCommand ItemClick { get; set; }
+        public new ICommand ItemClick { get; set; }
 
         private void SetupItemClickListener()
         {
@@ -104,7 +105,7 @@ namespace Cheesebaron.HorizontalListView.Droid.Bindings
             };
         }
 
-        public new IMvxCommand ScreenChanged { get; set; }
+        public new ICommand ScreenChanged { get; set; }
 
         private void SetupScreenChangedListener()
         {

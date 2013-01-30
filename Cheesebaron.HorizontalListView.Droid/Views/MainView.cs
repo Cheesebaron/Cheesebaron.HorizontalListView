@@ -11,6 +11,9 @@ namespace Cheesebaron.HorizontalListView.Droid.Views
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.Main);
+
+            var hlv = FindViewById<HorizontalListView>(Resource.Id.listView);
+            //hlv.Snap = true;
         }
     }
 }

@@ -88,7 +88,6 @@ namespace Cheesebaron.HorizontalListView
         {
             InitView();
             _dataSetObserver = new DataObserver(this);
-            //Snap = true;
         }
 
         private void InitView()

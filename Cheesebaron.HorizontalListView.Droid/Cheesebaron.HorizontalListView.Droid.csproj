@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,19 +44,29 @@
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Cirrious.MvvmCross.Android">
-      <HintPath>..\..\..\..\..\..\..\ENM\Main\extbin\MvvmCross\Cirrious.MvvmCross.Android.dll</HintPath>
+    <Reference Include="Cirrious.MvvmCross">
+      <HintPath>..\..\..\..\..\ENM\Main\extbin\MvvmCross\vNextNext\Droid\Debug\Cirrious.MvvmCross.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.MvvmCross.Binding.Android">
-      <HintPath>..\..\..\..\..\..\..\ENM\Main\extbin\MvvmCross\Cirrious.MvvmCross.Binding.Android.dll</HintPath>
+    <Reference Include="Cirrious.MvvmCross.Binding">
+      <HintPath>..\..\..\..\..\ENM\Main\extbin\MvvmCross\vNextNext\Droid\Debug\Cirrious.MvvmCross.Binding.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Binding.Android, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\ENM\Main\extbin\MvvmCross\vNextNext\Droid\Debug\Cirrious.MvvmCross.Binding.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Droid">
+      <HintPath>..\..\..\..\..\ENM\Main\extbin\MvvmCross\vNextNext\Droid\Debug\Cirrious.MvvmCross.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility.Droid">
+      <HintPath>..\..\..\..\..\ENM\Main\extbin\MvvmCross\vNextNext\Droid\Debug\Cirrious.MvvmCross.Plugins.Visibility.Droid.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
-    <Reference Include="Newtonsoft.Json.MonoDroid">
-      <HintPath>..\..\..\..\..\..\..\ENM\Main\extbin\MvvmCross\Newtonsoft.Json.MonoDroid.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows">
+      <HintPath>..\..\..\..\..\ENM\Main\extbin\MvvmCross\vNextNext\Droid\Debug\System.Windows.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -71,7 +82,7 @@
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <AndroidResource Include="Resources\Layout\ViewItem.axml">
-      <SubType>AndroidResource</SubType>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\SplashScreen.axml">
       <SubType>AndroidResource</SubType>
@@ -91,6 +102,9 @@
   <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml" />
     <AndroidResource Include="Resources\Values\MvxBindingAttributes.xml" />
+    <AndroidResource Include="Resources\Drawable\kitten3.jpg" />
+    <AndroidResource Include="Resources\Drawable\kitten1.jpg" />
+    <AndroidResource Include="Resources\Drawable\kitten2.jpg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cheesebaron.HorizontalListView.Core\Cheesebaron.HorizontalListView.Core.csproj">

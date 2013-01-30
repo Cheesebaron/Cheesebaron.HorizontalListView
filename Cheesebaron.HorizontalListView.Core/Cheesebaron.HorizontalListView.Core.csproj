@@ -33,19 +33,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Cirrious.MvvmCross.Android">
-      <HintPath>..\..\..\..\..\..\..\ENM\Main\extbin\MvvmCross\Cirrious.MvvmCross.Android.dll</HintPath>
+    <Reference Include="Cirrious.MvvmCross">
+      <HintPath>..\..\..\..\..\ENM\Main\extbin\MvvmCross\vNextNext\Droid\Debug\Cirrious.MvvmCross.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.MvvmCross.Binding.Android">
-      <HintPath>..\..\..\..\..\..\..\ENM\Main\extbin\MvvmCross\Cirrious.MvvmCross.Binding.Android.dll</HintPath>
+    <Reference Include="Cirrious.MvvmCross.Droid">
+      <HintPath>..\..\..\..\..\ENM\Main\extbin\MvvmCross\vNextNext\Droid\Debug\Cirrious.MvvmCross.Droid.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
-    <Reference Include="Newtonsoft.Json.MonoDroid">
-      <HintPath>..\..\..\..\..\..\..\ENM\Main\extbin\MvvmCross\Newtonsoft.Json.MonoDroid.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows">
+      <HintPath>..\..\..\..\..\ENM\Main\extbin\MvvmCross\vNextNext\Droid\Debug\System.Windows.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
   </ItemGroup>

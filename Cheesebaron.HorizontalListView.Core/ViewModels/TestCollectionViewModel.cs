@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 using Cirrious.MvvmCross.Commands;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Platform.Diagnostics;
 using Cirrious.MvvmCross.ViewModels;
 
@@ -9,7 +9,7 @@ namespace Cheesebaron.HorizontalListView.Core.ViewModels
     public class TestCollectionViewModel : MvxViewModel
     {
         public ObservableCollection<TestViewModel> TestViewModels { get; set; }
-        public IMvxCommand DisplaySelectedItem
+        public ICommand DisplaySelectedItem
         {
             get
             {
@@ -22,7 +22,7 @@ namespace Cheesebaron.HorizontalListView.Core.ViewModels
             MvxTrace.TaggedTrace("TestCollectionViewModel", "I'm in your base testing {0} with string {1}", id, text);
         }
 
-        public IMvxCommand ScreenChanged
+        public ICommand ScreenChanged
         {
             get
             {
@@ -32,7 +32,7 @@ namespace Cheesebaron.HorizontalListView.Core.ViewModels
 
         private void DiplayScreenChanged(object it)
         {
-            MvxTrace.TaggedTrace("TestCollectionViewModel", "I'm changing the screen! {0}", it);
+            //MvxTrace.TaggedTrace("TestCollectionViewModel", "I'm changing the screen! {0}", it);
         }
 
         public TestCollectionViewModel()
