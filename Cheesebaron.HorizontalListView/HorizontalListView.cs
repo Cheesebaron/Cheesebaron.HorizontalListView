@@ -37,14 +37,17 @@ using Android.Content;
 
 namespace Cheesebaron.HorizontalListView
 {
+    [Preserve]
     public delegate void ScreenChangedEventHandler(object sender, ScreenChangedEventArgs e);
 
+    [Preserve(AllMembers = true)]
     public class ScreenChangedEventArgs : EventArgs
     {
         public int CurrentScreen { get; set; }
         public int CurrentX { get; set; }
     }
 
+    [Preserve(AllMembers = true)]
     public class HorizontalListView : AdapterView<BaseAdapter>
     {
         #region Fields
@@ -457,6 +460,7 @@ namespace Cheesebaron.HorizontalListView
         }
 
         #region Internal classes
+        [Preserve(AllMembers = true)]
         private class DataObserver : DataSetObserver
         {
             private readonly HorizontalListView _horizontalListView;
