@@ -485,6 +485,7 @@ namespace Cheesebaron.HorizontalListView
             }
         }
 
+        [Preserve(AllMembers = true)]
         private class GestureListener : GestureDetector.SimpleOnGestureListener
         {
             private readonly HorizontalListView _horizontalListView;
