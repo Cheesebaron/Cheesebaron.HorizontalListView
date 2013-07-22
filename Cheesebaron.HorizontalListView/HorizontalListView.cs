@@ -51,14 +51,6 @@ namespace Cheesebaron.HorizontalListView
     public class HorizontalListView : AdapterView<BaseAdapter>
     {
         #region Fields
-
-        private const int SnapVelocityDipPerSecond = 600;
-        private const int VelocityUnitPixelsPerSecond = 1000;
-        private const int FractionOfScreenWidthForSwipe = 4;
-        private const int AnimationScreenDurationMillis = 500;
-        private VelocityTracker _velocityTracker;
-        private int _maximumVelocity;
-        private int _densityAdjustedSnapVelocity;
         private int _currentScreen;
 
         private int _leftViewIndex;
@@ -104,12 +96,6 @@ namespace Cheesebaron.HorizontalListView
             Scroller = new Scroller(Context);
             var listener = new GestureListener(this);
             _gestureDetector = new GestureDetector(Context, listener);
-
-            var configuration = ViewConfiguration.Get(Context);
-            _maximumVelocity = configuration.ScaledMaximumFlingVelocity;
-
-            var density = Context.Resources.DisplayMetrics.Density;
-            _densityAdjustedSnapVelocity = (int)(density * SnapVelocityDipPerSecond);
         }
 
         #endregion
@@ -174,8 +160,6 @@ namespace Cheesebaron.HorizontalListView
             get { return _currentX; } 
             private set { _currentX = value; }
         }
-       
-        public bool Snap { get; set; }
 
         #endregion
         
@@ -243,7 +227,6 @@ namespace Cheesebaron.HorizontalListView
         public override void SetSelection(int position)
         {
             CurrentScreen = position;
-            SnapToDestination();
         }
 
         private void FillList(int dx)
@@ -345,73 +328,13 @@ namespace Cheesebaron.HorizontalListView
         public override bool DispatchTouchEvent(MotionEvent e)
         {
             var handled = base.DispatchTouchEvent(e) | _gestureDetector.OnTouchEvent(e);
-            return Snap ? base.DispatchTouchEvent(e) : handled;
-        }
-        
-        public override bool OnTouchEvent(MotionEvent e)
-        {
-            if (Snap) // Oh snap!
-            {
-                if (_velocityTracker == null)
-                    _velocityTracker = VelocityTracker.Obtain();
-                _velocityTracker.AddMovement(e);
-
-                if (e.Action == MotionEventActions.Cancel || e.Action == MotionEventActions.Up)
-                {
-                    var velocityTracker = _velocityTracker;
-                    velocityTracker.ComputeCurrentVelocity(VelocityUnitPixelsPerSecond, _maximumVelocity);
-                    var velocityX = (int)velocityTracker.XVelocity;
-
-                    if (velocityX > _densityAdjustedSnapVelocity && CurrentScreen > 0)
-                        SnapToScreen(CurrentScreen - 1);
-                    else if (velocityX < -_densityAdjustedSnapVelocity && CurrentScreen < Adapter.Count - 1)
-                        SnapToScreen(CurrentScreen + 1);
-                    else
-                        SnapToDestination();
-                    
-                    if (null != _velocityTracker)
-                    {
-                        _velocityTracker.Recycle();
-                        _velocityTracker = null;
-                    }
-
-                    return true;
-                }    
-            }
-            return base.OnTouchEvent(e);
+            return handled;
         }
 
         public void ScrollTo(int x) {
 		    Scroller.StartScroll(_nextX, 0, x - _nextX, 0);
 		    RequestLayout();
 	    }
-
-        private void SnapToScreen(int whichScreen, int duration = -1)
-        {
-            CurrentScreen = Math.Max(0, Math.Min(whichScreen, Adapter.Count - 1));
-            var nextX = CurrentScreen * Width;
-            var delta = nextX - _nextX;
-
-            if (duration < 0)
-                Scroller.StartScroll(_nextX, 0, delta, 0, (int)(Math.Abs(delta) / (float)Width * AnimationScreenDurationMillis));
-            else
-                Scroller.StartScroll(_nextX, 0, delta, duration);
-
-            RequestLayout();
-        }
-
-        private void SnapToDestination()
-        {
-            var whichScreen = CurrentScreen;
-            var deltaX = _nextX - (Width * CurrentScreen);
-
-            if ((deltaX < 0) && CurrentScreen != 0 && (Width / FractionOfScreenWidthForSwipe < -deltaX))
-                whichScreen--;
-            else if ((deltaX > 0) && (CurrentScreen + 1 != Adapter.Count) && (Width / FractionOfScreenWidthForSwipe < deltaX))
-                whichScreen++;
-
-            SnapToScreen(whichScreen);
-        }
 
         protected bool OnFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
         {
@@ -448,11 +371,6 @@ namespace Cheesebaron.HorizontalListView
                 {
                     _dataSetObserver.Dispose();
                     _dataSetObserver = null;
-                }
-                if (null != _velocityTracker)
-                {
-                    _velocityTracker.Recycle();
-                    _velocityTracker = null;
                 }
             }
             

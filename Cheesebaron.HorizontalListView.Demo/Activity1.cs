@@ -20,10 +20,6 @@ namespace Cheesebaron.HorizontalListView.Demo
 
             var horiListView = FindViewById<HorizontalListView>(Resource.Id.listView);
 
-            // Set this to true if you want it to snap!
-            // Only works with items fitting the entire screen width.
-            horiListView.Snap = false;
-
             var data = new List<string>();
 
             for (var i = 0; i < Random.Next(3, 10); i++)
