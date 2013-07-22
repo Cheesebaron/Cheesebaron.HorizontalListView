@@ -9,18 +9,13 @@ Features
 * Non-locking mode
   + No locking and no center snapping
   + Velocity fling
-* Locking mode (Snap mode)
-  + Snaps to adjacent views when scrolling
-  + Snaps to left edge of view
-  + Smooth scrolling
 * MvvmCross binding
 
 Todo
 ----
-* Center locking mode
-* Pager?
-* Screen changed event for both modes
-* More docs
+* Screen Changed event
+* Locking mode (rething Snap (removed for now))
+* Update MvvmCross binding and sample
 
 License
 =======
