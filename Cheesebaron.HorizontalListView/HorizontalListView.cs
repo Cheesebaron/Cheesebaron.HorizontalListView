@@ -425,6 +425,7 @@ namespace Cheesebaron.HorizontalListView
 
             public override bool OnScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
             {
+                _horizontalListView.RequestDisallowInterceptTouchEvent(true);
                 _horizontalListView._nextX += (int)distanceX;
                 _horizontalListView.RequestLayout();
 
