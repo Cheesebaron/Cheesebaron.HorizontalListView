@@ -14,7 +14,7 @@ Features
 Todo
 ----
 * Screen Changed event
-* Locking mode (rething Snap (removed for now))
+* Locking mode (rethink Snap (removed for now))
 * Update MvvmCross binding and sample
 
 License
