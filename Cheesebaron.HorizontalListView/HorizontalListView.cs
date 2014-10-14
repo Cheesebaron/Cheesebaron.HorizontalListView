@@ -176,7 +176,7 @@ namespace Cheesebaron.HorizontalListView
         private void AddAndMeasureChild(View child, int viewPos)
         {
             var childParams = child.LayoutParameters ??
-                              new LayoutParams(LayoutParams.FillParent, LayoutParams.FillParent);
+                              new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent);
             AddViewInLayout(child, viewPos, childParams, true);
             child.Measure(MeasureSpec.MakeMeasureSpec(Width, MeasureSpecMode.AtMost),
                 MeasureSpec.MakeMeasureSpec(Height, MeasureSpecMode.AtMost));
