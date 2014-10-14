@@ -1,6 +1,8 @@
 Cheesebaron.HorizontalListView
 ==============================
 
+> NOTE: No longer actively maintained. I do take pull requests. Consider thinking about whether ViewPager solves your problem instead of using this library.
+
 This is derivative work of [Paul Soucy's](https://github.com/dinocore1) [HorizontalListView.java](https://github.com/dinocore1/DevsmartLib-Android/blob/master/devsmartlib/src/com/devsmart/android/ui/HorizontalListView.java "HorizontalListView"),
 which has been ported to C# and added C# event handlers.
 
